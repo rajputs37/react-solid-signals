@@ -31,6 +31,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rajputs37/react-solid-signals.git"
+  },
   "keywords": [
     "react",
     "signals",
