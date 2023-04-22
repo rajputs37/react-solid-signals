@@ -59,7 +59,7 @@ function SignalUpdateGeneral<T>({
         });
 
         jsxToSet = !jsxToSet ? showProps.fallback ?? null : jsxToSet;
-        jsxToSet && setShowSignal(jsxToSet);
+        setShowSignal(jsxToSet ?? <></>);
       }
     }
   }, [state]);
