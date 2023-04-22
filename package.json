@@ -1,5 +1,5 @@
 {
-  "name": "react-signal",
+  "name": "react-solid-signals",
   "version": "1.0.0",
   "description": "Using signals in react to boost performance",
   "main": "dist/index.js",
