@@ -2,19 +2,24 @@ import { useEffect, useMemo, useState } from "react";
 import useSignal from "../signal/createSignal";
 import React from "react";
 import { ShowProps, SignalUpdateDependencies } from "./singalUdate.types";
+import { SignalSetter } from "../signal/createSignal.types";
 
 function SignalUpdateGeneral<T>({
   fn,
   deps,
   showProps,
+  useMemoProps,
 }: {
   fn: any;
   deps: SignalUpdateDependencies<T>;
   showProps?: ShowProps;
+  useMemoProps?: {
+    setMemoizedValue: SignalSetter<T>;
+  };
 }) {
   const [showSignal, setShowSignal] = useSignal(<></>);
 
-  const useSignalId = useMemo(() => {
+  const signalUpdateId = useMemo(() => {
     return Math.random().toString(8).slice(2);
   }, []);
 
@@ -28,15 +33,15 @@ function SignalUpdateGeneral<T>({
     deps.forEach((dep, currentIndex) => {
       dep.signal.current = {
         ...dep.signal.current,
-        [useSignalId]: { arrayIndex: currentIndex, setState },
+        [signalUpdateId]: { arrayIndex: currentIndex, setState },
       };
     });
     return () => {
       deps.forEach((dep) => {
-        const entryFound = dep.signal.current[useSignalId];
+        const entryFound = dep.signal.current[signalUpdateId];
         if (entryFound) {
           const copiedObject = { ...dep.signal.current };
-          delete copiedObject[useSignalId];
+          delete copiedObject[signalUpdateId];
           dep.signal.current = copiedObject;
         }
       });
@@ -45,6 +50,10 @@ function SignalUpdateGeneral<T>({
 
   useEffect(() => {
     const value = fn();
+    if (useMemoProps) {
+      useMemoProps.setMemoizedValue(value);
+    }
+
     if (showProps) {
       if (value === true) {
         setShowSignal(showProps.jsx);
