@@ -83,7 +83,7 @@ const memosizedData = useMemoSignal(()=>{
 
 ```
 
-`memosizedData` is also a signal and have the 2 getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed.
+`memosizedData` is also a signal and have the same two getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed.
 
 
 
