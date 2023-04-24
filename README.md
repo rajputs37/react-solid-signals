@@ -76,7 +76,7 @@ Usage
 import { useMemoSignal }  from 'react-solid-signals';
 
 const memosizedData = useMemoSignal(()=>{
-  //this function will be executed whenever its dependency is changed
+
   console.log('counter',counter.value())
   return counter.value() * 4;
 },[counter])
