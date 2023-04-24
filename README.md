@@ -30,6 +30,8 @@ Try it on codesanbox https://codesandbox.io/s/compassionate-water-jkzfib?file=/s
 ## useSignal
 Usage
 ```
+import { useSignal }  from 'react-solid-signals';
+
 const SomeComponent = ()=>{
   const [counter, setCounter] = useSignal(0);
   
@@ -51,6 +53,37 @@ const SomeComponent = ()=>{
 The second element of the returned array is a setter which is identical to the `setState` React dispatch setter we use with `useState`.
 
 Now even when the counter value is changed continously when the user clicks on the button, none of components jsx tree is re-rendered, only the part `{counter.jsx}` is re-rendered.
+
+## useEffectSignal
+Standard React `useEffect` wont work with signals,to perform side effects whenever signals change, we need `useEffectSignal`.
+Usage
+```
+import { useEffectSignal }  from 'react-solid-signals';
+
+useEffectSignal(()=>{
+  //this function will be executed whenever its dependency is changed
+  console.log('counter',counter.value())
+},[counter])
+
+```
+
+`useEffectSignal` takes a function as the first argument and a dependency array as the second argument. <b> Dependency array must be an array of signalsonly</b>.
+
+
+## useMemoSignal
+Usage
+```
+import { useMemoSignal }  from 'react-solid-signals';
+
+const memosizedData = useMemoSignal(()=>{
+  //this function will be executed whenever its dependency is changed
+  console.log('counter',counter.value())
+  return counter.value() * 4;
+},[counter])
+
+```
+
+`memosizedData` is also a signal and have the 2 getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed.
 
 
 
