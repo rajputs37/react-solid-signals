@@ -85,5 +85,68 @@ const memosizedData = useMemoSignal(()=>{
 
 `memosizedData` is also a signal and have the same two getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed.
 
+## Show - If
+In React while using state we use conditional rendering like the below
+```
+const SomeComponent = () => {
+  const [counter, setCounter] = useState(0)
+  
+  return <div>
+    {counter ===2 ? 
+      <div>Counter is 2</div>:
+      <div> Counter is not 2</div>
+      }
+  </div>
+}
+```
+Above type of conditional rendering will not work using signals.
+To achieve the same functionality using signals, we must use `Show` component provided by the library as follows:
+
+```
+import { Show, useSignal } from 'react-solid-signals';
+
+const SomeComponent = () => {
+  const [counter, setCounter] = useSignal(0)
+  
+  return <div>
+    <Show when={()=>{
+      return count.value() === 2;
+    }} deps=[counter]>
+      <div>
+        Counter is 2
+      </div>
+    </Show>
+  </div>
+}
+```
+Above `Show` component will show it's children only when the `when` function returns `true`.
+Show component needs 3 props to function.
+1. `deps` : A dependency array of signals, when condition will be re-calculated whenever a signal in the dependency changes.
+2. `when` : a function whose return type is boolean
+3. `children` : A JSX Element should which will be displayed when the condition is true.
+
+## Show - If - else
+We can also implement if-else logic using the `Show` component as follows:
+
+```
+import { Show, useSignal } from 'react-solid-signals';
+
+const SomeComponent = () => {
+  const [counter, setCounter] = useSignal(0)
+  
+  return <div>
+    <Show when={()=>{
+      return count.value() === 2;
+    }} deps=[counter] 
+    defaultComponent={<div>Counter is not 2</div>}
+    >
+      <div>
+        Counter is 2
+      </div>
+    </Show>
+  </div>
+}
+```
+If the `defaultComponent` prop is provided and if the `when` condition is false, the defaultComponent will be displayed.
 
 
