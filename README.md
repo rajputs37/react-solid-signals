@@ -23,7 +23,7 @@ export default function App() {
   );
 }
 ```
-The component `SomeHeavyComponent` is going to get re-rendered whenenver the `count` is changed. This is a big problem, that we solve on a daily basis when we consider performance as our key metric. Careful state management with many clever tricks will solve many such performance problems. But the question is what if we can avoid this problem altogether.
+The component `SomeHeavyComponent` is going to get re-rendered whenenver the `count` is changed. This is a big problem, that we solve on a daily basis when we consider performance as our key metric. Careful state management with many clever tricks will solve many such performance problems. But the question is what if we can avoid this problem altogether. What if we can avoid this problem without using a different JS framework like <a href="https://www.solidjs.com/">Solid JS</a> and still uisng the rich ecosystem of React JS.
 
 Try it on codesanbox https://codesandbox.io/s/compassionate-water-jkzfib?file=/src/App.tsx
 
@@ -83,7 +83,7 @@ const memosizedData = useMemoSignal(()=>{
 
 ```
 
-`memosizedData` is also a signal and have the same two getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed.
+`memosizedData` is also a signal and have the same two getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed. The hook also accepts a 3rd argument as `defaultValue`, if provided then the defaultValue will be used to initilize the signal.
 
 ## Show - If
 In React while using state we use conditional rendering like the below
@@ -126,7 +126,7 @@ Show component needs 3 props to function.
 3. `children` : A JSX Element should which will be displayed when the condition is true.
 
 ## Show - If - else
-We can also implement if-else logic using the `Show` component as follows:
+We can also implement `if-else` logic using the `Show` component as follows:
 
 ```
 import { Show, useSignal } from 'react-solid-signals';
@@ -148,5 +148,37 @@ const SomeComponent = () => {
 }
 ```
 If the `defaultComponent` prop is provided and if the `when` condition is false, the defaultComponent will be displayed.
+
+
+## Show - If - elseIf - else
+We can also implement `if-elseIf-else` logic using the `Show` component as follows:
+
+```
+import { Show, useSignal } from 'react-solid-signals';
+
+const SomeComponent = () => {
+  const [counter, setCounter] = useSignal(0)
+  
+  return <div>
+    <Show when={()=>{
+      return count.value() === 2;
+    }} deps=[counter] 
+    defaultComponent={<div>Counter is not 2</div>}
+    elseIfs={ [ [() => counter.value()===3, <div>Counter is 3</div>] ] }
+    >
+      <div>
+        Counter is 2
+      </div>
+    </Show>
+  </div>
+}
+```
+`elseIfs` prop is an array of sub-arrays. The sub-arrays will have exactly 2 arguments and the following type
+```
+type ShowElseIfs = Array<[() => boolean, JSX.Element]>;
+```
+The first entry in the array is a function whose return type is boolean, the second entry is a JSX element.
+If any of the first encountered subArray consition is true then the jsx element corresponding to that condition will be displayed.
+
 
 
