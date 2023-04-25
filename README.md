@@ -52,7 +52,7 @@ const SomeComponent = ()=>{
 
 The second element of the returned array is a setter which is identical to the `setState` React dispatch setter we use with `useState`.
 
-Now even when the counter value is changed continously when the user clicks on the button, none of components jsx tree is re-rendered, only the part `{counter.jsx}` is re-rendered.
+Now even when the counter value is changed continously when the user clicks on the button, none of components in the jsx tree is re-rendered, only the part `{counter.jsx}` is re-rendered.
 
 ## useEffectSignal
 Standard React `useEffect` wont work with signals,to perform side effects whenever signals change, we need `useEffectSignal`.
@@ -67,7 +67,7 @@ useEffectSignal(()=>{
 
 ```
 
-`useEffectSignal` takes a function as the first argument and a dependency array as the second argument. <b> Dependency array must be an array of signalsonly</b>.
+`useEffectSignal` takes a function as the first argument and a dependency array as the second argument. <b> Dependency array must be an array of signals only</b>.
 
 
 ## useMemoSignal
@@ -99,7 +99,7 @@ const SomeComponent = () => {
   </div>
 }
 ```
-Above type of conditional rendering will not work using signals.
+This type of conditional rendering will not work with signals.
 To achieve the same functionality using signals, we must use `Show` component provided by the library as follows:
 
 ```
@@ -121,7 +121,7 @@ const SomeComponent = () => {
 ```
 Above `Show` component will show it's children only when the `when` function returns `true`.
 Show component needs 3 props to function.
-1. `deps` : A dependency array of signals, when condition will be re-calculated whenever a signal in the dependency changes.
+1. `deps` : A dependency array of signals, when condition will be re-calculated whenever a signal in the dependency array changes.
 2. `when` : a function whose return type is boolean
 3. `children` : A JSX Element should which will be displayed when the condition is true.
 
@@ -173,12 +173,12 @@ const SomeComponent = () => {
   </div>
 }
 ```
-`elseIfs` prop is an array of sub-arrays. The sub-arrays will have exactly 2 arguments and the following type
+`elseIfs` prop is an array of sub-arrays. The sub-arrays will have exactly 2 elements and the following type
 ```
 type ShowElseIfs = Array<[() => boolean, JSX.Element]>;
 ```
-The first entry in the array is a function whose return type is boolean, the second entry is a JSX element.
-If any of the first encountered subArray consition is true then the jsx element corresponding to that condition will be displayed.
+The first element in the array is a function whose return type is boolean, the second element is a JSX element.
+If any of the first encountered subArray condition is true then the jsx element corresponding to that condition will be displayed.
 
 
 
