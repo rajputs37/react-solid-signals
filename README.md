@@ -109,76 +109,16 @@ const SomeComponent = () => {
   const [counter, setCounter] = useSignal(0)
   
   return <div>
-    <Show when={()=>{
-      return count.value() === 2;
-    }} deps=[counter]>
-      <div>
-        Counter is 2
-      </div>
-    </Show>
+    <Show jsxCallback={()=>{
+      return count.value() === 2 ? 'Counter is 2' : 'Counter is not 2';
+    }} deps={[counter]}/>
   </div>
 }
 ```
-Above `Show` component will show it's children only when the `when` function returns `true`.
-Show component needs 3 props to function.
-1. `deps` : A dependency array of signals, when condition will be re-calculated whenever a signal in the dependency array changes.
-2. `when` : a function whose return type is boolean
-3. `children` : A JSX Element should which will be displayed when the condition is true.
-
-## Show - If - else
-We can also implement `if-else` logic using the `Show` component as follows:
-
-```
-import { Show, useSignal } from 'react-solid-signals';
-
-const SomeComponent = () => {
-  const [counter, setCounter] = useSignal(0)
-  
-  return <div>
-    <Show when={()=>{
-      return count.value() === 2;
-    }} deps=[counter] 
-    defaultComponent={<div>Counter is not 2</div>}
-    >
-      <div>
-        Counter is 2
-      </div>
-    </Show>
-  </div>
-}
-```
-If the `defaultComponent` prop is provided and if the `when` condition is false, the defaultComponent will be displayed.
+A `jsxCallback` is a function which returns an JSX element and `deps` is an array of signals. JSX callback is again re-evaluated whenever the signals given in the dependency array is changed
 
 
-## Show - If - elseIf - else
-We can also implement `if-elseIf-else` logic using the `Show` component as follows:
 
-```
-import { Show, useSignal } from 'react-solid-signals';
-
-const SomeComponent = () => {
-  const [counter, setCounter] = useSignal(0)
-  
-  return <div>
-    <Show when={()=>{
-      return count.value() === 2;
-    }} deps=[counter] 
-    defaultComponent={<div>Counter is not 2</div>}
-    elseIfs={ [ [() => counter.value()===3, <div>Counter is 3</div>] ] }
-    >
-      <div>
-        Counter is 2
-      </div>
-    </Show>
-  </div>
-}
-```
-`elseIfs` prop is an array of sub-arrays. The sub-arrays will have exactly 2 elements and the following type
-```
-type ShowElseIfs = Array<[() => boolean, JSX.Element]>;
-```
-The first element in the array is a function whose return type is boolean, the second element is a JSX element.
-If any of the first encountered subArray condition is true then the jsx element corresponding to that condition will be displayed.
 
 
 
