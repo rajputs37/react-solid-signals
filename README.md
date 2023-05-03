@@ -85,7 +85,7 @@ const memosizedData = useMemoSignal(()=>{
 
 `memosizedData` is also a signal and have the same two getters `{ jsx, value }`. The memosizedData signal will be updated only when the counter signal is changed. The hook also accepts a 3rd argument as `defaultValue`, if provided then the defaultValue will be used to initilize the signal.
 
-## Show - If
+## Show 
 In React while using state we use conditional rendering like the below
 ```
 const SomeComponent = () => {
