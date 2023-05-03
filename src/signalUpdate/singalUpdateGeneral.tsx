@@ -1,20 +1,22 @@
 import { useEffect, useMemo, useState } from "react";
 import useSignal from "../signal/createSignal";
 import React from "react";
-import { ShowProps, SignalUpdateDependencies } from "./singalUdate.types";
+import { SignalUpdateDependencies } from "./singalUdate.types";
 import { SignalSetter } from "../signal/createSignal.types";
 
 function SignalUpdateGeneral<T>({
   fn,
   deps,
-  showProps,
   useMemoProps,
+  executeProps,
 }: {
   fn: any;
   deps: SignalUpdateDependencies<T>;
-  showProps?: ShowProps;
   useMemoProps?: {
     setMemoizedValue: SignalSetter<T>;
+  };
+  executeProps?: {
+    executeSignalFunction: () => JSX.Element | null;
   };
 }) {
   const [showSignal, setShowSignal] = useSignal(<></>);
@@ -54,22 +56,8 @@ function SignalUpdateGeneral<T>({
       useMemoProps.setMemoizedValue(value);
     }
 
-    if (showProps) {
-      if (value === true) {
-        setShowSignal(showProps.jsx);
-      } else {
-        let jsxToSet: JSX.Element | null = null;
-
-        showProps.elseIfs?.forEach((ele) => {
-          const elseIFValue = ele[0]();
-          if (elseIFValue && !jsxToSet) {
-            jsxToSet = ele[1];
-          }
-        });
-
-        jsxToSet = !jsxToSet ? showProps.fallback ?? null : jsxToSet;
-        setShowSignal(jsxToSet ?? <></>);
-      }
+    if (executeProps) {
+      setShowSignal(executeProps.executeSignalFunction() ?? <></>);
     }
   }, [state]);
 
