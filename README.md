@@ -141,8 +141,28 @@ export const useSignalAppSelector: TypedUseSelectorSignalHook<RootState> =
   signalStoreInitializer(store);
 
 ```
+Usage of `useSignalAppSelector`/ `useSignalSelector` in a component
+```
+const SomeComponent = ()=>{
+  const count = useSignalAppSelector((state)=>state.main.count,0)
+
+  return <>
+    {count.jx()}
+  </>
+}
+```
+Currently you must provide a default value in the hook as the second parameter. This default value will be used unless the signal is not updated with the correct value from the store.
 
 
+### There are no limitations of the getter singal.value(), all the methods, properties is possible on the data is also supported by this getter.
+
+## Current Limitations of signal.jsx() getter.
+1. Join operation on signal.jsx() is not supported (if the data is of type Array)
+2. Filter operation on signal.jsx() is not supported 
+3. Nested arrays are not suppported
+4. null/undefined not supported
+
+#### I am constantly working on this limitations. Please feel free to create a PR or an issue if needed. 
 
 
 
