@@ -162,6 +162,29 @@ Currently you must provide a default value in the hook as the second parameter. 
 3. Nested arrays are not suppported
 4. null/undefined not supported
 
+### Workaround to handle nested arrays
+```
+import { Show, useSignal } from 'react-solid-signals';
+
+const SomeComponent = ()=>{
+  const [complexNestedArray, setComplexNestedArray] = useSignal([ [1, 2, 3] ]);
+  
+  return <>
+    <h2>Workaround for Nested Arrays</h2>
+    <Show jsxCallback={()=>{
+      const [first] = complexNestedArray.value();
+      return <>
+        {first.map((element)=>{
+          return <div>
+            Element of nested array {element}
+          </div>
+        })}
+      </>
+    }} deps={[complexNestedArray]}/>
+  </>
+
+}
+```
 #### I am constantly working on this limitations. Please feel free to create a PR or an issue if needed. 
 
 
