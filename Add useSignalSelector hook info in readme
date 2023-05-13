@@ -117,6 +117,31 @@ const SomeComponent = () => {
 ```
 A `jsxCallback` is a function which returns an JSX element and `deps` is an array of signals. JSX callback is again re-evaluated whenever the signals given in the dependency array is changed
 
+## Use signals in redux
+You can use react-redux `useSelector` hook, but it will again cause re-render of the components. Create the below redux hook to select signals from redux store. You must provide your store instance in `signalStoreInitializer`.
+```
+import { signalStoreInitializer } from "react-solid-signals";
+import { store } from "./store";
+
+export const useSignalSelector = signalStoreInitializer(store);
+
+```
+
+If you are using typescript then use the below hook.
+```
+import { store } from "./store";
+import {
+  TypedUseSelectorSignalHook,
+  signalStoreInitializer,
+} from "react-solid-signals";
+
+export type RootState = ReturnType<typeof store.getState>
+
+export const useSignalAppSelector: TypedUseSelectorSignalHook<RootState> =
+  signalStoreInitializer(store);
+
+```
+
 
 
 
