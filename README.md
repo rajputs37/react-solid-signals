@@ -1,6 +1,8 @@
 # react-solid-signals
 Using Signals in react to boost performance. 
-
+```
+npm i react-solid-signals
+```
 
 ## Problem with react useState
 ```
